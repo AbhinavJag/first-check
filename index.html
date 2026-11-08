@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First Check</title>
+<meta name="description" content="Your first paycheck, line by line. See where every dollar went, how much you get back at tax time, and what's left to spend.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f0e6; --paper2:#ebe5d6; --card:#fffdf7; --ink:#191b20; --ink2:#4b4f58; --ink3:#8a8d94;
+  --line:#d9d2c0; --green:#13805a; --green2:#d6f0e3; --red:#c8432f; --red2:#fbe3dd; --gold:#ffd84d; --blue:#2b5fd9; --blue2:#dfe8ff;
+  --mono:'DM Mono',ui-monospace,Menlo,monospace; --head:'Bricolage Grotesque','Inter',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
+button{font:inherit;cursor:pointer}
+input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(244,240,230,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font:800 20px/1 var(--head);letter-spacing:-.01em;text-decoration:none}
+.brand i{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--gold);font:500 15px/1 var(--mono);font-style:normal}
+nav .links{display:flex;gap:22px;font-size:14px;font-weight:600}
+nav .links a{text-decoration:none;color:var(--ink2)}
+nav .links a:hover{color:var(--ink)}
+@media(max-width:720px){nav .links{display:none}}
+
+/* hero */
+.hero{padding:64px 0 28px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.kicker{display:inline-flex;gap:8px;align-items:center;font:500 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);background:var(--card);border:1px solid var(--line);padding:8px 12px;border-radius:999px}
+.kicker b{width:8px;height:8px;border-radius:50%;background:var(--green)}
+h1{font:800 clamp(42px,6.2vw,78px)/.98 var(--head);letter-spacing:-.035em;margin:22px 0 18px}
+h1 .strike{position:relative;white-space:nowrap}
+h1 .strike:after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:.12em;background:var(--red);transform:rotate(-3deg);border-radius:4px}
+h1 em{font-style:normal;background:linear-gradient(transparent 58%,var(--gold) 58%);padding:0 .06em}
+.lede{font-size:19px;color:var(--ink2);max-width:540px;margin:0 0 26px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;border-radius:12px;border:2px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;text-decoration:none;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.heroStub{transform:rotate(2.2deg)}
+.stat3{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+.stat3 div{font:500 13px/1.35 var(--body);color:var(--ink2);max-width:150px}
+.stat3 b{display:block;font:800 30px/1 var(--head);color:var(--ink);margin-bottom:6px;letter-spacing:-.02em}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.heroStub{transform:none}}
+
+/* stub */
+.stub{background:var(--card);border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 0 var(--line),0 24px 50px -24px rgba(40,30,10,.35);font-family:var(--mono);position:relative;overflow:hidden}
+.stub:before,.stub:after{content:"";position:absolute;left:0;right:0;height:10px;background:radial-gradient(circle at 7px -2px,var(--paper) 6px,transparent 7px) 0 0/14px 10px repeat-x}
+.stub:before{top:0}
+.stub:after{bottom:0;transform:rotate(180deg)}
+.stubHead{padding:26px 26px 14px;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:12px}
+.stubHead .co{font:700 15px/1.2 var(--body)}
+.stubHead small{display:block;color:var(--ink3);font-size:12px;margin-top:4px}
+.stubHead .pp{text-align:right;font-size:12px;color:var(--ink2)}
+.stubBody{padding:8px 14px 10px}
+.sec{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:12px 12px 4px;display:flex;justify-content:space-between}
+.row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:baseline;padding:7px 12px;border-radius:8px;font-size:14px;width:100%;text-align:left;background:none;border:0;color:inherit;font-family:var(--mono)}
+.row .ytd{color:var(--ink3);font-size:12px;min-width:74px;text-align:right}
+.row .amt{min-width:84px;text-align:right}
+button.row{cursor:pointer;transition:background .15s}
+button.row:hover{background:var(--paper)}
+button.row.on{background:var(--gold)}
+button.row .q{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1px solid var(--ink3);font-size:10px;color:var(--ink3);margin-left:6px;vertical-align:1px}
+.row.neg .amt{color:var(--red)}
+.net{margin:8px 12px 18px;padding:14px 14px;border:2px solid var(--ink);border-radius:10px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.net b{font:800 28px/1 var(--head);letter-spacing:-.02em}
+.netbar{height:12px;border-radius:6px;overflow:hidden;display:flex;margin:4px 12px 10px;background:var(--paper2)}
+.netbar span{display:block;height:100%;transition:width .35s}
+
+/* main tool */
+section{padding:56px 0}
+.secTitle{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:26px;flex-wrap:wrap}
+h2{font:800 clamp(30px,4vw,46px)/1.02 var(--head);letter-spacing:-.03em;margin:0}
+.secTitle p{margin:0;max-width:430px;color:var(--ink2)}
+.num{font:500 13px/1 var(--mono);color:var(--ink3);display:block;margin-bottom:10px;letter-spacing:.08em}
+.tool{display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start}
+@media(max-width:960px){.tool{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.field{margin-bottom:16px}
+.field label,.flabel{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:7px}
+.field label output{font:500 14px/1 var(--mono);color:var(--ink)}
+.inp{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+.inp:focus{border-color:var(--ink);outline:none}
+input[type=range]{width:100%;accent-color:var(--ink)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--paper);border-radius:10px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;padding:8px 4px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink2)}
+.seg button.on{background:var(--ink);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink2);margin:10px 0}
+.check input{margin-top:3px;accent-color:var(--ink);width:17px;height:17px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:12px;color:var(--ink3);margin-top:6px}
+.right{display:grid;gap:18px}
+.explain{background:var(--ink);color:#f3f1ea;border-radius:18px;padding:22px 24px;min-height:150px;position:relative}
+.explain .tag{font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.explain h3{font:700 24px/1.15 var(--head);margin:10px 0 8px;letter-spacing:-.01em}
+.explain p{margin:0 0 10px;color:#cfd0d4;font-size:15px}
+.explain .back{display:inline-flex;gap:8px;align-items:center;font:600 13px/1 var(--body);padding:8px 11px;border-radius:999px;margin-top:4px}
+.back.yes{background:var(--green);color:#fff}.back.no{background:#3a3d45;color:#e6e6e6}.back.maybe{background:var(--gold);color:var(--ink)}
+
+/* refund */
+.refund{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+@media(max-width:900px){.refund{grid-template-columns:1fr}}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin:8px 0 6px}
+.months button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:10px 0;font:500 12px/1 var(--mono);color:var(--ink2)}
+.months button.on{background:var(--green);border-color:var(--green);color:#fff}
+@media(max-width:560px){.months{grid-template-columns:repeat(6,1fr)}}
+.bigNum{font:800 clamp(52px,7vw,84px)/.95 var(--head);letter-spacing:-.04em;color:var(--green);margin:6px 0 4px}
+.bigNum.owe{color:var(--red)}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 16px;font-size:14px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.kv span:nth-child(even){font-family:var(--mono);text-align:right}
+.kv .tot{font-weight:700}
+.callout{border-left:4px solid var(--gold);background:#fff8d9;padding:12px 14px;border-radius:0 10px 10px 0;font-size:14px;color:var(--ink2);margin-top:14px}
+
+/* budget */
+.budget{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.budget{grid-template-columns:1fr}}
+.jar{display:grid;grid-template-columns:28px 1fr 96px;gap:12px;align-items:center;margin-bottom:14px}
+.jar .dot{width:28px;height:28px;border-radius:8px}
+.jar input[type=number]{padding:8px 10px}
+.stack{height:54px;display:flex;border-radius:12px;overflow:hidden;border:2px solid var(--ink);margin:6px 0 14px}
+.stack div{height:100%;display:grid;place-items:center;font:500 12px/1 var(--mono);color:var(--ink);white-space:nowrap;overflow:hidden;transition:width .35s}
+.goal{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.goalBar{height:18px;border-radius:9px;background:var(--paper2);overflow:hidden;margin:12px 0 8px}
+.goalBar span{display:block;height:100%;background:var(--green);border-radius:9px;transition:width .35s}
+
+/* checklist */
+.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ci{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:transform .15s,border-color .15s}
+.ci:hover{transform:translateY(-2px);border-color:var(--ink3)}
+.ci input{width:20px;height:20px;accent-color:var(--green);margin-top:2px;flex:none}
+.ci b{display:block;font-size:15px;margin-bottom:3px}
+.ci span{font-size:13px;color:var(--ink2)}
+.ci.done{background:var(--green2);border-color:#a7d9c0}
+.ci.done b{text-decoration:line-through;text-decoration-color:rgba(0,0,0,.35)}
+.progress{font:500 14px/1 var(--mono);color:var(--ink2)}
+
+/* share */
+.share{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* footer */
+footer{background:var(--ink);color:#c9cbd0;padding:52px 0 40px;margin-top:40px;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+footer h4{color:#fff;font:700 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px}
+footer a{color:#e7e8ea}
+footer p{margin:0 0 10px}
+footer .fine{grid-column:1/-1;border-top:1px solid #33363d;padding-top:18px;color:#8b8e95;font-size:12.5px}
+@media(max-width:800px){footer .wrap{grid-template-columns:1fr}}
+@media print{nav,.cta,.share,footer,#refund,#budget,#checklist,.hero{display:none}.tool{grid-template-columns:1fr}.panel{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="#top"><i>$</i>First Check</a>
+  <div class="links"><a href="#decode">Decode my stub</a><a href="#refund">Do I get it back?</a><a href="#budget">Where it goes</a><a href="#checklist">First week</a></div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <span class="kicker"><b></b>Your first paycheck, line by line</span>
+    <h1>You earned <span class="strike">$540</span>.<br>Your check says <em id="heroNet">$465</em>.</h1>
+    <p class="lede">Thirty hours at $18 an hour, and the number in your bank account is smaller. Every first paycheck comes with that little shock. First Check takes your stub apart line by line, tells you which money you get back at tax time, and helps you decide where the rest goes.</p>
+    <div class="cta"><a class="btn" href="#decode">Decode my paycheck</a><a class="btn ghost" href="#refund">Will I get a refund?</a></div>
+    <div class="stat3">
+      <div><b>7.65%</b>goes to Social Security and Medicare on every check</div>
+      <div><b>$16,100</b>you can earn in 2026 before owing federal income tax</div>
+      <div><b>$0</b>of your refund comes back unless you file a return</div>
+    </div>
+  </div>
+  <div class="heroStub" aria-hidden="true"><div class="stub" id="heroStub"></div></div>
+</div></header>
+
+<section id="decode"><div class="wrap">
+  <div class="secTitle">
+    <div><span class="num">01 / DECODE</span><h2>Build your stub</h2></div>
+    <p>Put in your job. Then tap any line on the stub to see what it is, where the money goes, and whether it comes back.</p>
+  </div>
+  <div class="tool">
+    <div class="panel" aria-label="Your job">
+      <div class="field"><label for="wage">Hourly pay <output id="wageO"></output></label><input id="wage" type="range" min="7.25" max="40" step="0.25"></div>
+      <div class="field"><label for="hours">Hours this pay period <output id="hoursO"></output></label><input id="hours" type="range" min="1" max="80" step="1"></div>
+      <div class="field"><span class="flabel">How often you get paid</span>
+        <div class="seg" id="freq" role="group" aria-label="Pay frequency">
+          <button data-v="52">Weekly</button><button data-v="26">Every 2 weeks</button><button data-v="24">Twice a month</button>
+        </div></div>
+      <div class="two">
+        <div class="field"><label for="ot">Overtime hrs</label><input class="inp" id="ot" type="number" min="0" max="40" step="1"></div>
+        <div class="field"><label for="tips">Tips ($)</label><input class="inp" id="tips" type="number" min="0" max="5000" step="1"></div>
+      </div>
+      <div class="field"><label for="state">Where you work</label>
+        <select class="inp" id="state">
+          <option value="CA">California</option>
+          <option value="NONE">A state with no income tax (TX, FL, WA, NV, TN and others)</option>
+          <option value="FLAT">Another state (I'll enter a rate)</option>
+        </select>
+        <div id="flatWrap" class="hint" hidden><label class="flabel" for="flat" style="margin-top:8px">State withholding rate <output id="flatO"></output></label><input id="flat" type="range" min="0" max="6" step="0.1"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="exempt"> <span>I wrote "Exempt" on my W-4<br><span class="hint" style="margin:0">No federal income tax gets taken out</span></span></label>
+      <label class="check"><input type="checkbox" id="dep"> My parents still claim me as a dependent</label>
+      <div class="hint">Numbers use 2026 rates for a single filer with a standard W-4. It's an estimate, not your employer's exact payroll math.</div>
+    </div>
+    <div class="right">
+      <div class="stub" id="stub"></div>
+      <div class="explain" id="explain" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="refund" style="background:var(--paper2)"><div class="wrap">
+  <div class="secTitle">
+    <div><span class="num">02 / TAX TIME</span><h2>Do I get it back?</h2></div>
+    <p>Payroll guesses your taxes as if you'll earn this much every week of the year. If you only work a summer, a lot of what they took is yours again, but only if you file.</p>
+  </div>
+  <div class="refund">
+    <div class="panel">
+      <span class="flabel">Which months will you work this job in 2026? Tap to change.</span>
+      <div class="months" id="months"></div>
+      <div class="hint" id="monthsHint"></div>
+      <div class="kv" id="refundKv"></div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;justify-content:center">
+      <span class="flabel" id="refundLabel">Estimated refund</span>
+      <div class="bigNum" id="refundBig">$0</div>
+      <div id="refundSub" style="color:var(--ink2)"></div>
+      <div class="callout" id="refundNote"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="budget"><div class="wrap">
+  <div class="secTitle">
+    <div><span class="num">03 / SPEND IT</span><h2>Where it goes</h2></div>
+    <p>Your take-home pay, split before you spend it. Set what each thing costs per paycheck and see what's left and how fast you reach a goal.</p>
+  </div>
+  <div class="budget">
+    <div class="panel" id="jars"></div>
+    <div class="panel">
+      <span class="flabel">One paycheck, split up</span>
+      <div class="stack" id="stack"></div>
+      <div id="leftLine" style="font-size:15px;color:var(--ink2)"></div>
+      <div style="margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)">
+        <span class="flabel">Saving for</span>
+        <div class="two">
+          <input class="inp" id="goalName" maxlength="28" aria-label="Goal name">
+          <input class="inp" id="goalAmt" type="number" min="1" step="1" aria-label="Goal amount">
+        </div>
+        <div class="goalBar"><span id="goalFill"></span></div>
+        <div id="goalLine" style="font-size:15px"></div>
+      </div>
+      <div class="share">
+        <button class="btn" id="copyLink">Copy share link</button>
+        <button class="btn ghost" id="printBtn">Print my stub</button>
+        <button class="btn ghost" id="resetBtn">Start over</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="checklist" style="background:var(--paper2)"><div class="wrap">
+  <div class="secTitle">
+    <div><span class="num">04 / FIRST WEEK</span><h2>New job checklist</h2></div>
+    <p class="progress" id="clProgress"></p>
+  </div>
+  <div class="cl" id="cl"></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>
+    <h4>First Check</h4>
+    <p>A plain-language guide to your first paycheck. Everything you type stays in this browser. There are no accounts and nothing is uploaded.</p>
+    <p>By Abhinav Jagtap.</p>
+  </div>
+  <div>
+    <h4>How it works</h4>
+    <p>Federal withholding follows the 2026 percentage method for a single filer with a standard W-4. Social Security is 6.2% and Medicare is 1.45%. California uses the 2026 EDD Method B tables and the 1.3% SDI rate.</p>
+  </div>
+  <div>
+    <h4>Sources</h4>
+    <p><a href="https://www.irs.gov/publications/p15t" target="_blank" rel="noopener">IRS Publication 15-T (2026)</a></p>
+    <p><a href="https://edd.ca.gov/siteassets/files/pdf_pub_ctr/26methb.pdf" target="_blank" rel="noopener">California EDD 2026 Method B</a></p>
+    <p><a href="https://www.ssa.gov/oact/cola/cbb.html" target="_blank" rel="noopener">SSA contribution and benefit base</a></p>
+    <p><a href="https://www.irs.gov/filing/check-if-you-need-to-file" target="_blank" rel="noopener">IRS: Do I need to file?</a></p>
+  </div>
+  <p class="fine">© 2026 First Check. Estimates for learning, not tax advice. Your employer's payroll system and your actual return may differ. Tips and overtime deductions follow the 2025 to 2028 federal rules and don't change Social Security, Medicare or state tax.</p>
+</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(()=>{
+// ---------- 2026 tax constants ----------
+const FED_STD=16100, DEP_MIN=1350, DEP_ADD=450;
+const FED_BR=[[0,.10],[12400,.12],[50400,.22],[105700,.24],[201775,.32],[256225,.35],[640600,.37]];
+const SS_RATE=.062, SS_BASE=184500, MED_RATE=.0145;
+const CA_SDI=.013, CA_LOW=18896, CA_STD=5706, CA_CREDIT=168.30;
+const CA_BR=[[0,.011],[11079,.022],[26264,.044],[41452,.066],[57542,.088],[72724,.1023],[371479,.1133],[445771,.1243],[742953,.1353],[1000000,.1463]];
+const TIPS_CAP=25000, OT_CAP=12500;
+const bracket=(inc,br)=>{let t=0;for(let i=0;i<br.length;i++){const lo=br[i][0],hi=i+1<br.length?br[i+1][0]:Infinity;if(inc>lo)t+=(Math.min(inc,hi)-lo)*br[i][1]}return t};
+
+// ---------- state ----------
+const DEF={wage:18,hours:30,freq:52,ot:0,tips:0,state:'CA',flat:3,exempt:false,dep:true,months:[5,6,7],jars:{Phone:25,Gas:40,Food:35,Fun:30},save:30,goalName:'First car',goalAmt:3000,done:[]};
+let S=JSON.parse(JSON.stringify(DEF));
+let sel='fed';
+const $=id=>document.getElementById(id);
+const money=(n,d=2)=>(n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const m0=n=>money(n,0);
+
+function load(){
+  try{const h=location.hash.slice(1);if(h.startsWith('s=')){Object.assign(S,JSON.parse(decodeURIComponent(atob(h.slice(2)))));return}}catch(e){}
+  try{const l=localStorage.getItem('firstcheck');if(l)Object.assign(S,JSON.parse(l))}catch(e){}
+}
+function persist(){try{localStorage.setItem('firstcheck',JSON.stringify(S))}catch(e){}}
+
+// ---------- math ----------
+function calc(st=S){
+  const P=st.freq, wage=+st.wage, hrs=+st.hours, ot=Math.max(0,+st.ot||0), tips=Math.max(0,+st.tips||0);
+  const reg=wage*hrs, otPay=wage*1.5*ot, gross=reg+otPay+tips;
+  const annual=gross*P;
+  const fed=st.exempt?0:bracket(Math.max(0,annual-FED_STD),FED_BR)/P;
+  const ss=Math.min(gross,SS_BASE/P)*SS_RATE, med=gross*MED_RATE;
+  let sdi=0,sit=0;
+  if(st.state==='CA'){sdi=gross*CA_SDI;if(annual>CA_LOW){sit=Math.max(0,bracket(annual-CA_STD,CA_BR)-CA_CREDIT)/P}}
+  else if(st.state==='FLAT'){sit=gross*(+st.flat/100)}
+  const ded=fed+ss+med+sdi+sit, net=gross-ded;
+  return {P,wage,hrs,ot,tips,reg,otPay,gross,fed,ss,med,sdi,sit,ded,net,annual};
+}
+function periodsWorked(st=S){return Math.round(st.months.length/12*st.freq)}
+function yearEnd(st=S){
+  const c=calc(st), n=periodsWorked(st);
+  const earned=c.gross*n, tipsY=c.tips*n, otPrem=c.wage*.5*c.ot*n;
+  const std=st.dep?Math.min(FED_STD,Math.max(DEP_MIN,earned+DEP_ADD)):FED_STD;
+  const fedTaxable=Math.max(0,earned-std-Math.min(tipsY,TIPS_CAP)-Math.min(otPrem,OT_CAP));
+  const fedOwe=bracket(fedTaxable,FED_BR);
+  let stOwe=0;
+  if(st.state==='CA'){stOwe=earned>CA_LOW?Math.max(0,bracket(earned-CA_STD,CA_BR)-(st.dep?0:CA_CREDIT)):0}
+  else if(st.state==='FLAT'){stOwe=null}
+  const fedW=c.fed*n, stW=c.sit*n;
+  return {n,earned,std,fedTaxable,fedOwe,fedW,stOwe,stW,fica:(c.ss+c.med)*n,sdi:c.sdi*n,
+    fedBack:fedW-fedOwe, stBack:stOwe==null?null:stW-stOwe};
+}
+
+// ---------- explainers ----------
+const EX={
+ reg:{tag:'Earnings',t:'Regular pay',p:c=>[`${c.hrs} hours times ${money(c.wage)} an hour. This is your <b>gross pay</b>, what you earned before anything comes out.`,`Check this line first. If the hours look wrong, tell your manager now. Fixing it later is harder.`],b:null},
+ ot:{tag:'Earnings',t:'Overtime',p:c=>[`Hours over 40 in a week usually pay 1.5 times your rate, so ${money(c.wage*1.5)} an hour here.`,`From 2025 to 2028, the extra half of that overtime pay can be deducted on your federal return, up to $12,500. It doesn't lower Social Security or Medicare.`],b:null},
+ tips:{tag:'Earnings',t:'Tips',p:c=>[`Tips you report to your employer count as wages. Taxes come out of your check for them even though the cash is already in your pocket.`,`From 2025 to 2028, up to $25,000 of tips can be deducted on your federal return. Payroll still withholds, so the savings show up when you file.`],b:null},
+ fed:{tag:'Taxes',t:'Federal income tax',p:c=>S.exempt?[`Nothing is taken out because your W-4 says Exempt. That's only allowed if you owed no federal income tax last year and expect to owe none this year.`]:[`Payroll looks at this one check, pretends you'll earn that much every period all year (${m0(c.annual)}), and takes out the tax on that.`,`In 2026 the first $16,100 you earn isn't taxed at all. If your real yearly pay ends up lower than payroll assumed, the extra comes back as a refund.`],b:'yes'},
+ ss:{tag:'Taxes',t:'Social Security',p:c=>[`6.2% of every dollar you earn, up to ${m0(SS_BASE)} a year. It pays monthly checks to retired and disabled people today.`,`You don't get it back at tax time. You earn credits toward your own benefits later, and 40 credits (about 10 years of work) gets you there.`],b:'no'},
+ med:{tag:'Taxes',t:'Medicare',p:c=>[`1.45% of everything you earn, with no cap. It pays for health coverage for people 65 and older.`,`It doesn't come back as a refund. Together with Social Security this is called FICA, 7.65% in total.`],b:'no'},
+ sdi:{tag:'Taxes',t:'CA State Disability Insurance',p:c=>[`1.3% of your pay in California. It funds partial pay if you can't work because of an injury or illness, and Paid Family Leave to care for a family member or bond with a new baby.`,`It doesn't come back at tax time. Think of it as insurance you're paying into while you work.`],b:'no'},
+ sit:{tag:'Taxes',t:'State income tax',p:c=>S.state==='CA'?[`California withholds income tax only if your yearly pay would be above ${m0(CA_LOW)}. Payroll uses the same pretend-it's-all-year math as federal.`,`If you earn less than that over the real year, file a California return (Form 540) and it comes back.`]:[`Your state's income tax, estimated with the rate you picked. Rules are different in every state.`,`If you earned less than your state's filing limit, you can usually get it back by filing a state return.`],b:'maybe'},
+ net:{tag:'Take home',t:'Net pay',p:c=>[`This is what actually lands in your bank account: ${money(c.net)}, or ${Math.round(c.net/c.gross*100)}% of what you earned.`,`Plan your spending around this number, not your hourly rate times hours.`],b:null},
+};
+const BACK={yes:['yes','Usually comes back if you file'],no:['no',"Doesn't come back"],maybe:['maybe','Can come back if you file a state return']};
+
+// ---------- render stub ----------
+function stubHTML(c,interactive){
+  const ytd=v=>money(v);
+  const L=(k,label,amt,neg)=>{const ex=EX[k];const tagO=interactive?'button':'div';
+    return `<${tagO} class="row${neg?' neg':''}${interactive&&sel===k?' on':''}" ${interactive?`data-k="${k}" aria-pressed="${sel===k}"`:''}><span>${label}${interactive?'<span class="q">?</span>':''}</span><span class="ytd">${ytd(neg?-amt:amt)}</span><span class="amt">${neg?'-':''}${money(Math.abs(amt))}</span></${tagO}>`};
+  let h=`<div class="stubHead"><div><div class="co">Corner Market &amp; Deli</div><small>Employee: You · Pay rate ${money(c.wage)}/hr</small></div><div class="pp">PAY PERIOD<br>${c.P===52?'Weekly':c.P===26?'Biweekly':'Semimonthly'}<br>Check #0001</div></div><div class="stubBody">`;
+  h+=`<div class="sec"><span>Earnings</span><span>YTD &nbsp;&nbsp;&nbsp; This check</span></div>`;
+  h+=L('reg',`Regular ${c.hrs}h`,c.reg);
+  if(c.ot>0)h+=L('ot',`Overtime ${c.ot}h`,c.otPay);
+  if(c.tips>0)h+=L('tips','Tips reported',c.tips);
+  h+=`<div class="row" style="font-weight:500"><span>Gross pay</span><span class="ytd"></span><span class="amt">${money(c.gross)}</span></div>`;
+  h+=`<div class="sec"><span>Deductions</span><span></span></div>`;
+  h+=L('fed','Federal income tax',c.fed,true);
+  h+=L('ss','Social Security',c.ss,true);
+  h+=L('med','Medicare',c.med,true);
+  if(S.state==='CA'||!interactive)h+=L('sdi','CA SDI',c.sdi,true);
+  if((S.state!=='NONE')||!interactive)h+=L('sit',S.state==='CA'||!interactive?'CA income tax':'State income tax',c.sit,true);
+  const pct=v=>Math.max(0,v/c.gross*100);
+  h+=`<div class="netbar" title="Where this check went"><span style="width:${pct(c.net)}%;background:var(--green)"></span><span style="width:${pct(c.fed+c.sit)}%;background:var(--blue)"></span><span style="width:${pct(c.ss+c.med+c.sdi)}%;background:var(--red)"></span></div>`;
+  h+=interactive?`<button class="net${sel==='net'?' on':''}" data-k="net" style="width:calc(100% - 24px);background:${sel==='net'?'var(--gold)':'transparent'};font-family:var(--mono);color:inherit;cursor:pointer"><span>Net pay <span class="q" style="display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1px solid var(--ink3);font-size:10px;color:var(--ink3)">?</span></span><b>${money(c.net)}</b></button>`:`<div class="net"><span>Net pay</span><b>${money(c.net)}</b></div>`;
+  return h+'</div>';
+}
+function renderExplain(c){
+  const ex=EX[sel]; const ps=ex.p(c);
+  let b='';
+  if(ex.b){const k=sel==='sit'&&S.state==='NONE'?null:ex.b;if(k){const[cl,txt]=BACK[k];b=`<span class="back ${cl}">${cl==='yes'?'↺':cl==='no'?'→':'?'} ${txt}</span>`}}
+  $('explain').innerHTML=`<span class="tag">${ex.tag}</span><h3>${ex.t}</h3>${ps.map(p=>`<p>${p}</p>`).join('')}${b}`;
+}
+
+// ---------- refund ----------
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function renderRefund(){
+  const y=yearEnd();
+  $('months').innerHTML=MN.map((m,i)=>`<button data-m="${i}" class="${S.months.includes(i)?'on':''}" aria-pressed="${S.months.includes(i)}">${m}</button>`).join('');
+  $('monthsHint').textContent=`${S.months.length} month${S.months.length===1?'':'s'} of work is about ${y.n} paychecks and ${m0(y.earned)} earned this year.`;
+  const rows=[['Federal tax taken out',money(y.fedW)],['Federal tax you actually owe',money(y.fedOwe)]];
+  if(S.state==='CA'){rows.push(['CA tax taken out',money(y.stW)],['CA tax you actually owe',money(y.stOwe)])}
+  else if(S.state==='FLAT'){rows.push(['State tax taken out',money(y.stW)])}
+  rows.push(['Social Security + Medicare (not refunded)',money(y.fica)]);
+  if(S.state==='CA')rows.push(['CA SDI (not refunded)',money(y.sdi)]);
+  $('refundKv').innerHTML=rows.map(r=>`<span>${r[0]}</span><span>${r[1]}</span>`).join('');
+  const back=y.fedBack+(y.stBack||0);
+  const big=$('refundBig'); big.textContent=m0(Math.abs(back)); big.classList.toggle('owe',back<-0.5);
+  $('refundLabel').textContent=back<-0.5?'You may owe about':'Estimated refund';
+  const parts=[`${m0(Math.max(0,y.fedBack))} federal`];
+  if(S.state==='CA')parts.push(`${m0(Math.max(0,y.stBack))} California`);
+  $('refundSub').textContent=back<-0.5?'Payroll took out less than you owe. Consider raising withholding on your W-4.':`${parts.join(' + ')}${S.state==='FLAT'?' (state refund depends on your state)':''}`;
+  let note;
+  if(S.exempt&&y.fedOwe>0)note=`Careful: you marked Exempt, but at ${m0(y.earned)} for the year you'd owe about ${m0(y.fedOwe)} in federal tax. Exempt is only for people who owe nothing.`;
+  else if(y.fedOwe===0&&y.fedW>0)note=`At ${m0(y.earned)} for the year you owe no federal income tax, so everything withheld comes back. You have to file a return to get it, and you can file free at <a href="https://www.irs.gov/filing/irs-free-file-do-your-federal-taxes-for-free" target="_blank" rel="noopener">IRS Free File</a>.`;
+  else if(y.fedOwe===0)note=`Nothing is being withheld and you owe nothing. You may not need to file, but filing is free and you still get your W-2 in January.`;
+  else note=`Part of your refund depends on what else you earn this year. Tips and overtime deductions are already counted.`;
+  $('refundNote').innerHTML=note;
+}
+
+// ---------- budget ----------
+const JC=['#ffd84d','#9cc8ff','#ffb4a8','#c8b6ff','#b9e8c9','#ffcf9e'];
+function renderBudget(c){
+  const keys=Object.keys(S.jars);
+  if(!$('jars').dataset.built){
+    $('jars').innerHTML=`<span class="flabel">Per paycheck</span>`+keys.map((k,i)=>`<div class="jar"><span class="dot" style="background:${JC[i]}"></span><label for="j${i}" style="font-weight:600">${k}</label><input class="inp" id="j${i}" data-j="${k}" type="number" min="0" step="1" value="${S.jars[k]}"></div>`).join('')+
+    `<div class="jar"><span class="dot" style="background:var(--green)"></span><label for="saveIn" style="font-weight:600">Save</label><input class="inp" id="saveIn" type="number" min="0" step="1" value="${S.save}"></div><div class="hint">Most people who save on purpose do it first, the day the check lands. That's why Save is its own line.</div>`;
+    $('jars').dataset.built=1;
+  }
+  const spend=keys.reduce((a,k)=>a+(+S.jars[k]||0),0)+(+S.save||0);
+  const left=c.net-spend;
+  const parts=keys.map((k,i)=>[k,+S.jars[k]||0,JC[i]]).concat([['Save',+S.save||0,'var(--green)']]);
+  if(left>0)parts.push(['Left',left,'#fff']);
+  const tot=Math.max(c.net,spend);
+  $('stack').innerHTML=parts.map(p=>`<div style="width:${p[1]/tot*100}%;background:${p[2]}" title="${p[0]} ${money(p[1])}">${p[1]/tot>.09?p[0]:''}</div>`).join('');
+  $('leftLine').innerHTML=left>=0?`After all that, <b>${money(left)}</b> is left from a ${money(c.net)} check.`:`That's <b style="color:var(--red)">${money(-left)} more</b> than this check pays. Cut something or pick up hours.`;
+  const per=+S.save||0, goal=Math.max(1,+S.goalAmt||1);
+  const checks=per>0?Math.ceil(goal/per):Infinity;
+  const weeks=checks*(52/c.P);
+  const byEnd=per*periodsWorked();$('goalFill').style.width=Math.min(100,byEnd/goal*100)+'%';
+  $('goalLine').innerHTML=per>0?`${esc(S.goalName||'Your goal')}: <b>${m0(goal)}</b> in about <b>${checks} paychecks</b> (${weeks<9?Math.round(weeks)+' weeks':Math.round(weeks/4.33)+' months'}). The bar shows how far you get by the end of the months you picked above.`:`Put something in Save to see when you'll reach ${esc(S.goalName||'your goal')}.`;
+}
+const esc=s=>String(s).replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+// ---------- checklist ----------
+const CL=[
+ ['w4','Fill out your W-4','Single, no other jobs: just sign it. Only write Exempt if you owed nothing last year and expect to owe nothing this year.'],
+ ['de4','California DE 4 (if in CA)','The state version of the W-4. If you skip it, payroll uses the same choices as your W-4.'],
+ ['i9','Bring I-9 documents','A passport alone, or a school ID or driver\'s license plus a Social Security card or birth certificate.'],
+ ['permit','Work permit if you\'re under 18','In California, your school issues it (form B1-4 then B1-1) before you start.'],
+ ['dd','Set up direct deposit','You need your bank\'s routing number and your account number. Paper checks can take days to clear.'],
+ ['stub','Check your first stub','Hours, rate and the deductions above. Mistakes are easiest to fix on the first check.'],
+ ['save','Pick a savings amount','Decide it before payday and move it first.'],
+ ['w2','Watch for your W-2 in January','Your employer has to send it by Jan 31. You need it to file and get your refund.'],
+];
+function renderChecklist(){
+  $('cl').innerHTML=CL.map(([id,b,s])=>`<label class="ci${S.done.includes(id)?' done':''}"><input type="checkbox" data-c="${id}" ${S.done.includes(id)?'checked':''}><div><b>${b}</b><span>${s}</span></div></label>`).join('');
+  $('clProgress').textContent=`${S.done.length} of ${CL.length} done`;
+}
+
+// ---------- main render ----------
+function render(){
+  const c=calc();
+  $('wage').value=S.wage;$('wageO').textContent=money(+S.wage);
+  $('hours').value=S.hours;$('hoursO').textContent=S.hours+' h';
+  $('ot').value=S.ot;$('tips').value=S.tips;$('state').value=S.state;$('flat').value=S.flat;$('flatO').textContent=(+S.flat).toFixed(1)+'%';
+  $('flatWrap').hidden=S.state!=='FLAT';$('exempt').checked=S.exempt;$('dep').checked=S.dep;
+  [...$('freq').children].forEach(b=>b.classList.toggle('on',+b.dataset.v===+S.freq));
+  if((sel==='ot'&&c.ot<=0)||(sel==='tips'&&c.tips<=0)||(sel==='sdi'&&S.state!=='CA')||(sel==='sit'&&S.state==='NONE'))sel='fed';
+  $('stub').innerHTML=stubHTML(c,true);
+  renderExplain(c);renderRefund();renderBudget(c);
+  $('goalName').value===''&&($('goalName').value=S.goalName);$('goalAmt').value=S.goalAmt;
+  persist();
+}
+function renderHero(){
+  const c=calc({...DEF,state:'CA'});
+  $('heroStub').innerHTML=stubHTML(c,false);
+  $('heroNet').textContent=m0(c.net);
+}
+
+// ---------- events ----------
+const set=(k,v)=>{S[k]=v;render()};
+$('wage').addEventListener('input',e=>set('wage',+e.target.value));
+$('hours').addEventListener('input',e=>set('hours',+e.target.value));
+$('ot').addEventListener('input',e=>set('ot',Math.min(40,Math.max(0,+e.target.value||0))));
+$('tips').addEventListener('input',e=>set('tips',Math.max(0,+e.target.value||0)));
+$('state').addEventListener('change',e=>set('state',e.target.value));
+$('flat').addEventListener('input',e=>set('flat',+e.target.value));
+$('exempt').addEventListener('change',e=>set('exempt',e.target.checked));
+$('dep').addEventListener('change',e=>set('dep',e.target.checked));
+$('freq').addEventListener('click',e=>{const b=e.target.closest('button');if(b)set('freq',+b.dataset.v)});
+$('stub').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){sel=b.dataset.k;render()}});
+$('months').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;const m=+b.dataset.m;S.months=S.months.includes(m)?S.months.filter(x=>x!==m):[...S.months,m].sort((a,b)=>a-b);if(!S.months.length)S.months=[m];render()});
+$('jars').addEventListener('input',e=>{const t=e.target;if(t.dataset.j)S.jars[t.dataset.j]=Math.max(0,+t.value||0);if(t.id==='saveIn')S.save=Math.max(0,+t.value||0);render()});
+$('goalName').addEventListener('input',e=>{S.goalName=e.target.value;render()});
+$('goalAmt').addEventListener('input',e=>{S.goalAmt=Math.max(1,+e.target.value||1);render()});
+$('cl').addEventListener('change',e=>{const id=e.target.dataset.c;if(!id)return;S.done=e.target.checked?[...new Set([...S.done,id])]:S.done.filter(x=>x!==id);renderChecklist();persist()});
+const toast=t=>{const el=$('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1800)};
+$('copyLink').addEventListener('click',async()=>{const url=location.href.split('#')[0]+'#s='+btoa(encodeURIComponent(JSON.stringify(S)));try{await navigator.clipboard.writeText(url);toast('Link copied')}catch(e){prompt('Copy this link',url)}});
+$('printBtn').addEventListener('click',()=>{location.hash='decode';setTimeout(()=>window.print(),100)});
+$('resetBtn').addEventListener('click',()=>{S=JSON.parse(JSON.stringify(DEF));sel='fed';$('jars').dataset.built='';try{localStorage.removeItem('firstcheck')}catch(e){}history.replaceState(null,'',location.pathname);render();renderChecklist();toast('Reset')});
+
+load();renderHero();render();renderChecklist();
+})();
+</script>
+</body>
+</html>
